@@ -18,16 +18,56 @@ A bash script to visualize large directories and files in a tree-like structure.
 
 ## Installation
 
+### Local Installation
+
 1. Clone or download this repository
 2. Make the script executable:
    ```bash
-   chmod +x script.sh
+   chmod +x ddysk
    ```
+
+### Global Installation
+
+To make `ddysk` available globally from anywhere in your terminal:
+
+**Option 1: Copy to system directory (requires sudo)**
+```bash
+sudo cp ddysk /usr/local/bin/
+sudo chmod +x /usr/local/bin/ddysk
+```
+
+**Option 2: Copy to user directory (no sudo required)**
+```bash
+mkdir -p ~/.local/bin
+cp ddysk ~/.local/bin/
+chmod +x ~/.local/bin/ddysk
+```
+
+Then add `~/.local/bin` to your PATH if it's not already there. Add this line to your `~/.bashrc` or `~/.zshrc`:
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+**Option 3: Create a symlink (requires sudo)**
+```bash
+sudo ln -s $(pwd)/ddysk /usr/local/bin/ddysk
+```
+
+After installation, you can use `ddysk` from any directory:
+```bash
+ddysk -p /home/user -s 100
+```
 
 ## Usage
 
+If installed globally:
 ```bash
-./script.sh [OPTIONS]
+ddysk [OPTIONS]
+```
+
+If using locally:
+```bash
+./ddysk [OPTIONS]
 ```
 
 ### Options
@@ -42,22 +82,22 @@ A bash script to visualize large directories and files in a tree-like structure.
 
 Scan current directory for items ≥ 500MB (simple list format):
 ```bash
-./script.sh
+ddysk
 ```
 
 Scan a specific directory for items ≥ 100MB in tree format:
 ```bash
-./script.sh -p /home/user -s 100 -t
+ddysk -p /home/user -s 100 -t
 ```
 
 Scan current directory for items ≥ 50MB including hidden files:
 ```bash
-./script.sh -s 50 --include-hidden
+ddysk -s 50 --include-hidden
 ```
 
 Scan with all options enabled:
 ```bash
-./script.sh -p . -s 200 --include-hidden -t
+ddysk -p . -s 200 --include-hidden -t
 ```
 
 ## Output Format
@@ -66,14 +106,17 @@ The script supports two output formats:
 
 ### Simple List Format (default)
 - Each entry shows the full path and size in MB
-- Format: `path - sizeMB`
+- Format: `icon path - sizeMB`
+- Icons are color-coded: green for folders, blue for files
+- Sizes are color-coded: green (< 1GB), yellow (1-5GB), magenta (5-10GB), red (> 10GB)
 
 ### Tree Format (`-t` or `--tree`)
 - Displays results in a hierarchical tree structure
-- 📁 Folders are marked with a folder icon
-- 📄 Files are marked with a file icon
+- 📁 Folders are marked with a folder icon (green)
+- 📄 Files are marked with a file icon (blue)
 - Each entry shows the name and size in MB
 - Tree characters (`│`, `├──`) indicate the directory hierarchy
+- Sizes are color-coded: green (< 1GB), yellow (1-5GB), magenta (5-10GB), red (> 10GB)
 
 ## Notes
 
