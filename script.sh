@@ -6,6 +6,7 @@ MIN_SIZE_MB=500
 MAX_DEPTH=4
 INCLUDE_HIDDEN=false
 TREE_FORMAT=false
+VERSION="1.0.0"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -40,6 +41,10 @@ while [[ $# -gt 0 ]]; do
             echo "  $0 -p /home/user -s 100"
             echo "  $0 -s 50 -t"
             echo "  $0 -p . -s 200 --include-hidden -t"
+            exit 0
+            ;;
+        -v|--version)
+            echo "ddysk version $VERSION"
             exit 0
             ;;
         *)
