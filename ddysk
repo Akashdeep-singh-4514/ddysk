@@ -107,6 +107,20 @@ fi
 # Sort by path
 sort -t'|' -k2 /tmp/folder_sizes_$$ > /tmp/sorted_$$
 
+# Function to get color based on size
+get_size_color() {
+    local size_mb=$1
+    if [ "$size_mb" -lt 1000 ]; then
+        echo "\e[32m"  # Green for < 1GB
+    elif [ "$size_mb" -lt 5000 ]; then
+        echo "\e[33m"  # Yellow for 1GB - 5GB
+    elif [ "$size_mb" -lt 10000 ]; then
+        echo "\e[35m"  # Magenta for 5GB - 10GB
+    else
+        echo "\e[31m"  # Red for > 10GB
+    fi
+}
+
 # Read and display
 if [ "$TREE_FORMAT" = true ]; then
     # Tree format display
@@ -119,7 +133,8 @@ if [ "$TREE_FORMAT" = true ]; then
         
         if [ -z "$relative_path" ]; then
             # Root folder
-            echo "📁 $(basename "$path") - ${size_mb} MB"
+            color=$(get_size_color "$size_mb")
+            echo -e "\e[32m📁 $(basename "$path")\e[0m - ${color}${size_mb} MB\e[0m"
         else
             # Count depth by number of slashes
             depth=$(echo "$relative_path" | tr -cd '/' | wc -c)
@@ -133,19 +148,32 @@ if [ "$TREE_FORMAT" = true ]; then
             # Use appropriate icon
             if [ "$type" = "d" ]; then
                 icon="📁"
+                icon_color="\e[32m"
             else
                 icon="📄"
+                icon_color="\e[34m"
             fi
             
+            # Get size color
+            color=$(get_size_color "$size_mb")
+            
             # Use tree characters
-            echo "${indent}├── $icon $(basename "$path") - ${size_mb} MB"
+            echo -e "${indent}├── ${icon_color}${icon}\e[0m $(basename "$path") - ${color}${size_mb} MB\e[0m"
         fi
     done < /tmp/sorted_$$
 else
     # Simple list format: path - size
     while IFS='|' read -r type path size_kb; do
         size_mb=$((size_kb/1024))
-        echo "$path - ${size_mb}MB"
+        color=$(get_size_color "$size_mb")
+        if [ "$type" = "d" ]; then
+            icon_color="\e[32m"
+            icon="📁"
+        else
+            icon_color="\e[34m"
+            icon="📄"
+        fi
+        echo -e "${icon_color}${icon}\e[0m $path - ${color}${size_mb}MB\e[0m"
     done < /tmp/sorted_$$
 fi
 
