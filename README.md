@@ -2,6 +2,14 @@
 
 A bash script to visualize large directories and files in a tree-like structure. `ddysk` helps you quickly identify what's taking up space on your disk by scanning directories and displaying folders and files above a specified size threshold.
 
+## Screenshots
+
+### Simple List Format
+![Simple List Format](images/Screenshot_20260116_110153.png)
+
+### Tree Format
+![Tree Format](images/Screenshot_20260116_110313.png)
+
 ## Features
 
 - 🔍 Find large folders and files recursively
