@@ -16,7 +16,7 @@ A bash script to visualize large directories and files in a tree-like structure.
 - 📊 Display results in tree format or simple list format
 - ⚙️ Configurable minimum size threshold
 - 🎯 Configurable maximum search depth
-- 👁️ Optional inclusion of hidden files and directories
+- 👁️ Optional exclusion of hidden files and directories
 - 📁 Shows both folder sizes and individual large files
 
 ## Requirements
@@ -82,7 +82,7 @@ If using locally:
 
 - `-p, --path PATH` - Starting path to search (default: current directory `.`)
 - `-s, --size SIZE` - Minimum size in MB (default: 500)
-- `--include-hidden` - Include hidden files and folders (default: excluded)
+- `--exclude-hidden` - Exclude hidden files and folders (default: included)
 - `-t, --tree` - Display results in tree format (default: simple list)
 - `-h, --help` - Show help message
 
@@ -98,14 +98,14 @@ Scan a specific directory for items ≥ 100MB in tree format:
 ddysk -p /home/user -s 100 -t
 ```
 
-Scan current directory for items ≥ 50MB including hidden files:
+Scan current directory for items ≥ 50MB (excluding hidden files):
 ```bash
-ddysk -s 50 --include-hidden
+ddysk -s 50 --exclude-hidden
 ```
 
 Scan with all options enabled:
 ```bash
-ddysk -p . -s 200 --include-hidden -t
+ddysk -p . -s 200 --exclude-hidden -t
 ```
 
 ## Output Format
@@ -128,7 +128,7 @@ The script supports two output formats:
 
 ## Notes
 
-- Hidden files and directories (starting with `.`) are excluded by default; use `--include-hidden` to include them
+- Hidden files and directories (starting with `.`) are included by default; use `--exclude-hidden` to exclude them
 - The script uses temporary files in `/tmp` for sorting
 - Folder sizes represent the total size including all contents
 - The default output format is a simple list; use `-t` or `--tree` for tree format
